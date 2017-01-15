@@ -181,12 +181,16 @@ public class DubboCodec extends ExchangeCodec implements Codec2 {
 
         // NOTICE modified by lishen
         // TODO
-        if (getSerialization(channel) instanceof OptimizedSerialization && !containComplexArguments(inv)) {
-            out.writeInt(inv.getParameterTypes().length);
-        } else {
-            out.writeInt(-1);
-            out.writeUTF(ReflectUtils.getDesc(inv.getParameterTypes()));
-        }
+	if (getSerialization(channel) instanceof OptimizedSerialization) {
+	    if (!containComplexArguments(inv)) {
+	    	out.writeInt(inv.getParameterTypes().length);
+	    } else {
+	    	out.writeInt(-1);
+	    }
+
+	} else {
+	    out.writeUTF(ReflectUtils.getDesc(inv.getParameterTypes()));
+	}
 
         Object[] args = inv.getArguments();
         if (args != null)
