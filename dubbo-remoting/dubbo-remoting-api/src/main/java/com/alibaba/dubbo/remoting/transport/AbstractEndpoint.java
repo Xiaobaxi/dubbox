@@ -31,7 +31,7 @@ import com.alibaba.dubbo.remoting.transport.codec.CodecAdapter;
  * 
  * @author william.liangf
  */
-public abstract class AbstractEndpoint extends AbstractPeer implements Resetable {
+public abstract class   AbstractEndpoint extends AbstractPeer implements Resetable {
     
     private static final Logger logger = LoggerFactory.getLogger(AbstractEndpoint.class);
 
@@ -54,7 +54,7 @@ public abstract class AbstractEndpoint extends AbstractPeer implements Resetable
                                         + url + ", cause: Channel closed. channel: " + getLocalAddress());
         }
         try {
-            if (url.hasParameter(Constants.HEARTBEAT_KEY)) {
+            if (url.hasParameter(Constants.TIMEOUT_KEY)) {
                 int t = url.getParameter(Constants.TIMEOUT_KEY, 0);
                 if (t > 0) {
                     this.timeout = t;
