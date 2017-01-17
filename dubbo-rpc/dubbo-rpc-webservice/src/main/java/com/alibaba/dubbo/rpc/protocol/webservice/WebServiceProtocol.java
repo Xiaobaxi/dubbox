@@ -27,10 +27,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.cxf.bus.extension.ExtensionManagerBus;
 import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.frontend.ClientProxyFactoryBean;
 import org.apache.cxf.frontend.ServerFactoryBean;
 import org.apache.cxf.interceptor.Fault;
+import org.apache.cxf.transport.http.DestinationRegistry;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transport.http.HTTPTransportFactory;
 import org.apache.cxf.transport.http.HttpDestinationFactory;
@@ -61,13 +63,14 @@ public class WebServiceProtocol extends AbstractProxyProtocol {
     
     private final ExtensionManagerBus bus = new ExtensionManagerBus();
 
-    private final HTTPTransportFactory transportFactory = new HTTPTransportFactory(bus);
+    private final HTTPTransportFactory transportFactory;
 	
     private HttpBinder httpBinder;
     
     public WebServiceProtocol() {
         super(Fault.class);
         bus.setExtension(new ServletDestinationFactory(), HttpDestinationFactory.class);
+        transportFactory = new HTTPTransportFactory(bus.getExtension(DestinationRegistry.class));
     }
 
     public void setHttpBinder(HttpBinder httpBinder) {
@@ -114,10 +117,10 @@ public class WebServiceProtocol extends AbstractProxyProtocol {
     	serverFactoryBean.setServiceBean(impl);
     	serverFactoryBean.setBus(bus);
         serverFactoryBean.setDestinationFactory(transportFactory);
-    	serverFactoryBean.create();
+        final Server server = serverFactoryBean.create();
         return new Runnable() {
             public void run() {
-            	serverFactoryBean.destroy();
+                server.destroy();
             }
         };
     }

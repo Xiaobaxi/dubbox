@@ -15,44 +15,37 @@
  */
 package com.alibaba.dubbo.remoting.http.jetty;
 
-import com.alibaba.dubbo.remoting.http.servlet.ServletManager;
+import org.mortbay.jetty.Handler;
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.handler.ContextHandler;
+import org.mortbay.jetty.handler.ContextHandlerCollection;
+import org.mortbay.jetty.handler.HandlerCollection;
 import org.mortbay.jetty.nio.SelectChannelConnector;
-import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.servlet.ServletHandler;
 import org.mortbay.jetty.servlet.ServletHolder;
-import org.mortbay.log.Log;
-import org.mortbay.log.StdErrLog;
 import org.mortbay.thread.QueuedThreadPool;
 
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
+import com.alibaba.dubbo.common.utils.ConfigUtils;
 import com.alibaba.dubbo.common.utils.NetUtils;
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.remoting.http.HttpHandler;
 import com.alibaba.dubbo.remoting.http.servlet.DispatcherServlet;
 import com.alibaba.dubbo.remoting.http.support.AbstractHttpServer;
 
 public class JettyHttpServer extends AbstractHttpServer {
 
-    private static final Logger logger = LoggerFactory.getLogger(JettyHttpServer.class);
+	private static final Logger logger = LoggerFactory.getLogger(JettyHttpServer.class);
 
-    private Server              server;
+	private Server server;
 
-    private URL url;
-
-    public JettyHttpServer(URL url, final HttpHandler handler){
+	public JettyHttpServer(URL url, final HttpHandler handler){
         super(url, handler);
-
-        // modified by lishen
-        this.url = url;
-        // TODO we should leave this setting to slf4j
-        Log.setLog(new StdErrLog());
-        Log.getLog().setDebugEnabled(false);
-
         DispatcherServlet.addHttpHandler(url.getPort(), handler);
-
+        
         int threads = url.getParameter(Constants.THREADS_KEY, Constants.DEFAULT_THREADS);
         QueuedThreadPool threadPool = new QueuedThreadPool();
         threadPool.setDaemon(true);
@@ -68,40 +61,58 @@ public class JettyHttpServer extends AbstractHttpServer {
         server = new Server();
         server.setThreadPool(threadPool);
         server.addConnector(connector);
-
-        ServletHandler servletHandler = new ServletHandler();
-        ServletHolder servletHolder = servletHandler.addServletWithMapping(DispatcherServlet.class, "/*");
-        servletHolder.setInitOrder(2);
-
-        // modified by lishen
-        // dubbo's original impl can't support the use of ServletContext
-//        server.addHandler(servletHandler);
-        // TODO Context.SESSIONS is the best option here?
-        Context context = new Context(server, "/", Context.SESSIONS);
-        context.setServletHandler(servletHandler);
-        ServletManager.getInstance().addServletContext(url.getPort(), context.getServletContext());
-
-        try {
-            server.start();
-        } catch (Exception e) {
-            throw new IllegalStateException("Failed to start jetty server on " + url.getAddress() + ", cause: "
-                                            + e.getMessage(), e);
-        }
+        
+    	ContextHandler ch=new ContextHandler(getContext());
+		{
+			ServletHolder servletHolder = new ServletHolder(new DispatcherServlet());
+			servletHolder.setInitOrder(2);
+			ServletHandler servletHandler = new ServletHandler();
+			String defaultPath = ConfigUtils.getProperty("dubbo.jetty.server.path");
+			if (StringUtils.isEmpty(defaultPath)) {
+				defaultPath = "/*";
+			}
+			servletHandler.addServletWithMapping(servletHolder, defaultPath);
+			ch.addHandler(servletHandler);
+		}
+		
+		Handler h = server.getHandler();
+		if (h instanceof HandlerCollection) {
+			((HandlerCollection)h).addHandler(ch);
+		} else if (h == null) {
+			server.setHandler(ch);
+		} else {
+			HandlerCollection hs = new HandlerCollection();
+			hs.addHandler(h);
+			hs.addHandler(ch);
+			server.setHandler(hs);
+		}
+		try {
+			server.start();
+		} catch (Exception e) {
+			throw new IllegalStateException("Failed to start jetty server on " + url.getAddress() + ", cause: " + e.getMessage(), e);
+		}
     }
 
-    public void close() {
-        super.close();
+	private String getContext() {
+		String defaultContext = ConfigUtils.getProperty("dubbo.jetty.server.context");
+		if (StringUtils.isEmpty(defaultContext)) {
+			return "";
+		} else if (!defaultContext.startsWith("/")) {
+			return  "/" + defaultContext;
+		}else{
+			return defaultContext;
+		}
+	}
 
-        // modified by lishen
-        ServletManager.getInstance().removeServletContext(url.getPort());
-
-        if (server != null) {
-            try {
-                server.stop();
-            } catch (Exception e) {
-                logger.warn(e.getMessage(), e);
-            }
-        }
-    }
+	public void close() {
+		super.close();
+		if (server != null) {
+			try {
+				server.stop();
+			} catch (Exception e) {
+				logger.warn(e.getMessage(), e);
+			}
+		}
+	}
 
 }

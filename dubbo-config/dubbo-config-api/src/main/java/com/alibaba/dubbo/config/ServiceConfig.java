@@ -39,6 +39,8 @@ import com.alibaba.dubbo.common.utils.ConfigUtils;
 import com.alibaba.dubbo.common.utils.NetUtils;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.dubbo.config.parse.TomcatConfigParse;
+import com.alibaba.dubbo.config.parse.WebContainer;
 import com.alibaba.dubbo.config.support.Parameter;
 import com.alibaba.dubbo.rpc.Exporter;
 import com.alibaba.dubbo.rpc.Invoker;
@@ -331,6 +333,19 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         }
 
         Integer port = protocolConfig.getPort();
+        if ("webservice".equals(protocolConfig.getName()) || "jaxrs".equals(protocolConfig.getName())) {
+            port = WebContainer.getInstance().getPortHTTP();
+            if (null == port) {
+                String httpPort = TomcatConfigParse.getTomcat6HttpPort("HTTP/1.1", "http");
+                if(null != httpPort && httpPort.length() > 0) {
+                    port = Integer.parseInt(httpPort);
+                }
+
+            }
+            if (null == port) {
+                port = protocolConfig.getPort();
+            }
+        }
         if (provider != null && (port == null || port == 0)) {
             port = provider.getPort();
         }
