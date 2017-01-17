@@ -35,6 +35,8 @@ public class SpringContainer implements Container {
     public static final String SPRING_CONFIG = "dubbo.spring.config";
     
     public static final String DEFAULT_SPRING_CONFIG = "classpath*:META-INF/spring/*.xml";
+    
+    public transient volatile static boolean initializing; 
 
     static ClassPathXmlApplicationContext context;
     
@@ -47,8 +49,10 @@ public class SpringContainer implements Container {
         if (configPath == null || configPath.length() == 0) {
             configPath = DEFAULT_SPRING_CONFIG;
         }
+        initializing = true;
         context = new ClassPathXmlApplicationContext(configPath.split("[,\\s]+"));
         context.start();
+        initializing = false;
     }
 
     public void stop() {
