@@ -1,17 +1,7 @@
-## DubboV (Dubbo extensions in hikVision)
-
-Dubbov now means Dubbo in HIKVISION. If you know java, javax and dubbo, you know what dubbox is :)
-
 ## 主要改进特性
-* [公安事业部] 多网域支持，按路由权重
 * [通用] 基于CXF的WebService发布
 * [通用] 基于CXF的Rest接口发布
 * [通用] Spring、Curator、ZooKeeper、CXF等框架升级
-
-
-## 主要贡献者
-* fangzhibin@hikvision.com.cn
-* jiyi@hikvision.com.cn
 
 
 ----
