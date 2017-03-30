@@ -25,8 +25,7 @@ public interface ZookeeperClient {
 	void close();
 
 	URL getUrl();
-
-
+	
 	/**
 	 * 创建zookeeper对应的节点，并给节点赋值，没有则创建，有则覆盖值
 	 * @author fangzhibin 2015年2月5日 上午9:39:17
@@ -54,5 +53,6 @@ public interface ZookeeperClient {
 	 * @modify: {原因} by fangzhibin 2015年2月12日 下午4:42:44
 	 */
 	boolean checkExist(String path);
+
 
 }

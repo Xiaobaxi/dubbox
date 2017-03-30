@@ -30,7 +30,7 @@
     <!-- here we demonstrate both annotation-based and xml-based configs -->
     <dubbo:annotation package="com.alibaba.dubbo.demo.user.facade" />
 
-    <dubbo:protocol name="dubbo" serialization="kryo" optimizer="com.alibaba.dubbo.demo.SerializationOptimizerImpl"/>
+    <dubbo:protocol name="dubbo"/>
     <!--<dubbo:protocol name="dubbo" serialization="fst" optimizer="com.alibaba.dubbo.demo.SerializationOptimizerImpl"/>-->
 
     <!--<dubbo:protocol name="dubbo" serialization="nativejava"/>-->
@@ -47,13 +47,7 @@
     <!--<dubbo:protocol name="rest" port="8888" server="tjws" contextpath="services"/>-->
 
     <!-- use tomcat server -->
-    <dubbo:protocol name="rest" port="8888" threads="500" contextpath="services" server="tomcat" accepts="500"
-                    extension="com.alibaba.dubbo.demo.extension.TraceInterceptor,
-                    com.alibaba.dubbo.demo.extension.TraceFilter,
-                    com.alibaba.dubbo.demo.extension.ClientTraceFilter,
-                    com.alibaba.dubbo.demo.extension.DynamicTraceBinding,
-                    com.alibaba.dubbo.demo.extension.CustomExceptionMapper,
-                    com.alibaba.dubbo.rpc.protocol.rest.support.LoggingFilter"/>
+    <dubbo:protocol name="rest" port="8888" threads="500" contextpath="services" server="tomcat" accepts="500"/>
 
     <!-- use the external tomcat or other server with the servlet approach; the port and contextpath must be exactly the same as those in external server -->
     <!--<dubbo:protocol name="rest" port="8888" contextpath="services" server="servlet"/>-->
@@ -77,7 +71,7 @@
     <bean id="userRestService" class="com.alibaba.dubbo.demo.user.facade.UserRestServiceImpl">
         <property name="userService" ref="userService"/>
     </bean>
-
+    
     <bean id="anotherUserRestService" class="com.alibaba.dubbo.demo.user.facade.AnotherUserRestServiceImpl">
         <property name="userService" ref="userService"/>
     </bean>

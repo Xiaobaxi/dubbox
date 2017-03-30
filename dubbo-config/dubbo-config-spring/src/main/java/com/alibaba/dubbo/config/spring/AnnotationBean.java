@@ -15,15 +15,14 @@
  */
 package com.alibaba.dubbo.config.spring;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
+import com.alibaba.dubbo.common.Constants;
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
+import com.alibaba.dubbo.common.utils.ConcurrentHashSet;
+import com.alibaba.dubbo.common.utils.ReflectUtils;
+import com.alibaba.dubbo.config.*;
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.dubbo.config.annotation.Service;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -34,24 +33,16 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.util.ClassUtils;
 
-import com.alibaba.dubbo.common.Constants;
-import com.alibaba.dubbo.common.logger.Logger;
-import com.alibaba.dubbo.common.logger.LoggerFactory;
-import com.alibaba.dubbo.common.utils.ConcurrentHashSet;
-import com.alibaba.dubbo.common.utils.ReflectUtils;
-import com.alibaba.dubbo.config.AbstractConfig;
-import com.alibaba.dubbo.config.ApplicationConfig;
-import com.alibaba.dubbo.config.ConsumerConfig;
-import com.alibaba.dubbo.config.ModuleConfig;
-import com.alibaba.dubbo.config.MonitorConfig;
-import com.alibaba.dubbo.config.ProtocolConfig;
-import com.alibaba.dubbo.config.ProviderConfig;
-import com.alibaba.dubbo.config.ReferenceConfig;
-import com.alibaba.dubbo.config.RegistryConfig;
-import com.alibaba.dubbo.config.ServiceConfig;
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.alibaba.dubbo.config.annotation.Service;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * AnnotationBean
@@ -212,6 +203,14 @@ public class AnnotationBean extends AbstractConfig implements DisposableBean, Be
         Class<?> clazz = bean.getClass();
         if(isProxyBean(bean)){
             clazz = AopUtils.getTargetClass(bean);
+        }
+        /**
+         * cglib代理，则父类是原始类。
+         * @Service注解，直接使用@Inherited。类注解上子类可以直接继承父类注解
+         * @Refrence注解，因为注解在方法或者字段上，所以@Inherited无效。直接获取代理类的超类（原始类）
+         */
+        if(ClassUtils.isCglibProxyClass(bean.getClass())){
+            clazz = AopUtils.getTargetClass(bean).getSuperclass();
         }
         Method[] methods = clazz.getMethods();
         for (Method method : methods) {

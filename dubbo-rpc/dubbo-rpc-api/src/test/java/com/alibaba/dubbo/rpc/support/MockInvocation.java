@@ -64,4 +64,10 @@ public class MockInvocation implements Invocation {
         return getAttachments().get(key);
     }
 
+	@Override
+	public void setAttachment(String key, String value) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

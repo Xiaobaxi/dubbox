@@ -1,3 +1,22 @@
+## DubboV (Dubbo extensions in hikVision)
+
+Dubbov now means Dubbo in HIKVISION. If you know java, javax and dubbo, you know what dubbox is :)
+
+## 主要改进特性
+* [公安事业部] 多网域支持，按路由权重
+* [通用] 基于CXF的WebService发布
+* [通用] 基于CXF的Rest接口发布
+* [通用] Spring、Curator、ZooKeeper、CXF等框架升级
+
+
+## 主要贡献者
+* fangzhibin@hikvision.com.cn
+* jiyi@hikvision.com.cn
+
+
+----
+# 当当DubboX说明内容
+
 Dubbox now means Dubbo eXtensions. If you know java, javax and dubbo, you know what dubbox is :)
 
 Dubbox adds features like RESTful remoting, Kyro/FST serialization, etc to the popular [dubbo service framework](http://github.com/alibaba/dubbo). It's been used by several projects of [dangdang.com](http://www.dangdang.com), which is one of the major e-commerce companies in China.
@@ -10,7 +29,7 @@ Dubbox adds features like RESTful remoting, Kyro/FST serialization, etc to the p
 * Dylan 独立开发者 dinguangx@163.com
 * Kangfoo 独立开发者
 
-有技术问题请移步此处讨论 https://github.com/dangdangdotcom/dubbox/issues
+**讨论QQ群**：258792161  （不限于dubbox，包括SOA设计、互联网技术等等兴趣交流）
 
 ## Dubbox当前的主要功能
 

@@ -2,19 +2,17 @@ package com.alibaba.dubbo.remoting.zookeeper.zkclient;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-
+import org.apache.zookeeper.Watcher.Event.KeeperState;
 import com.alibaba.dubbo.common.Constants;
+import com.alibaba.dubbo.common.URL;
+import com.alibaba.dubbo.remoting.zookeeper.ChildListener;
+import com.alibaba.dubbo.remoting.zookeeper.StateListener;
+import com.alibaba.dubbo.remoting.zookeeper.support.AbstractZookeeperClient;
 import com.github.zkclient.IZkChildListener;
 import com.github.zkclient.IZkStateListener;
 import com.github.zkclient.ZkClient;
 import com.github.zkclient.exception.ZkNoNodeException;
 import com.github.zkclient.exception.ZkNodeExistsException;
-import org.apache.zookeeper.Watcher.Event.KeeperState;
-
-import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.remoting.zookeeper.ChildListener;
-import com.alibaba.dubbo.remoting.zookeeper.StateListener;
-import com.alibaba.dubbo.remoting.zookeeper.support.AbstractZookeeperClient;
 
 public class ZkclientZookeeperClient extends AbstractZookeeperClient<IZkChildListener> {
 
@@ -96,36 +94,36 @@ public class ZkclientZookeeperClient extends AbstractZookeeperClient<IZkChildLis
 	public void removeTargetChildListener(String path, IZkChildListener listener) {
 		client.unsubscribeChildChanges(path,  listener);
 	}
-
+	
 	@Override
-	public void createOrUpdate(String path, byte[] data, boolean ephemeral) {
+    public void createOrUpdate(String path, byte[] data, boolean ephemeral) {
 		if(!client.exists(path)) {
 			if (ephemeral) {
 				client.createEphemeral(path);
 			} else {
 				client.createPersistent(path, true);
-			}
-		}
+			} 
+		} 
 		client.writeData(path, data);
-	}
-
+    }
+	
 	@Override
 	public String readData(String path) {
 		String data = null;
 		if(client.exists(path)) {
 			try {
 				data = new String(client.readData(path, true), "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				logger.error("to read the data for path error", e);
-			}
+	        } catch (UnsupportedEncodingException e) {
+	        	logger.error("to read the data for path error", e);
+	        }
 		}
 		return data;
 	}
-
+	
 	@Override
 	public boolean checkExist(String path) {
 		if(null != path) {
-			return client.exists(path);
+	    	return client.exists(path);
 		}
 		return false;
 	}

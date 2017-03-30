@@ -19,12 +19,10 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.cxf.bus.extension.ExtensionManagerBus;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.endpoint.Server;
@@ -39,7 +37,6 @@ import org.apache.cxf.transport.http.HttpDestinationFactory;
 import org.apache.cxf.transport.servlet.ServletController;
 import org.apache.cxf.transport.servlet.ServletDestinationFactory;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.remoting.http.HttpBinder;
@@ -117,10 +114,10 @@ public class WebServiceProtocol extends AbstractProxyProtocol {
     	serverFactoryBean.setServiceBean(impl);
     	serverFactoryBean.setBus(bus);
         serverFactoryBean.setDestinationFactory(transportFactory);
-        final Server server = serverFactoryBean.create();
+    	final Server server = serverFactoryBean.create();
         return new Runnable() {
             public void run() {
-                server.destroy();
+            	server.destroy();
             }
         };
     }

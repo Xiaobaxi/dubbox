@@ -21,6 +21,7 @@ import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
+import com.alibaba.dubbo.common.utils.ConfigUtils;
 import com.alibaba.dubbo.common.utils.NetUtils;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.remoting.Channel;
@@ -180,9 +181,12 @@ public class HeaderExchangeHandler implements ChannelHandlerDelegate {
                     Exception e = new Exception("Dubbo client can not supported string message: " + message + " in channel: " + channel + ", url: " + channel.getUrl());
                     logger.error(e.getMessage(), e);
                 } else {
-                    String echo = handler.telnet(channel, (String) message);
-                    if (echo != null && echo.length() > 0) {
-                        channel.send(echo);
+                	String telnetEnabled = ConfigUtils.getProperty("dubbo.telnet.enabled", Boolean.FALSE.toString());
+                    if(Boolean.TRUE.toString().endsWith(telnetEnabled)) {
+                    	String echo = handler.telnet(channel, (String) message);
+                    	if (echo != null && echo.length() > 0) {
+                    		channel.send(echo);
+                    	}
                     }
                 }
             } else {

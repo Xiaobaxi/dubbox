@@ -28,7 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.Version;
@@ -210,7 +209,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
             generic = Boolean.FALSE.toString();
         }
         if(local !=null){
-            if(local=="true"){
+        	if ("true".equals(local)) {
                 local=interfaceName+"Local";
             }
             Class<?> localClass;
@@ -224,7 +223,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
             }
         }
         if(stub !=null){
-            if(stub=="true"){
+        	if ("true".equals(stub)) {
                 stub=interfaceName+"Stub";
             }
             Class<?> stubClass;
@@ -334,18 +333,18 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
 
         Integer port = protocolConfig.getPort();
         if ("webservice".equals(protocolConfig.getName()) || "jaxrs".equals(protocolConfig.getName())) {
-            port = WebContainer.getInstance().getPortHTTP();
-            if (null == port) {
-                String httpPort = TomcatConfigParse.getTomcat6HttpPort("HTTP/1.1", "http");
-                if(null != httpPort && httpPort.length() > 0) {
-                    port = Integer.parseInt(httpPort);
-                }
-
-            }
-            if (null == port) {
-                port = protocolConfig.getPort();
-            }
-        }
+			port = WebContainer.getInstance().getPortHTTP();
+			if (null == port) {
+				String httpPort = TomcatConfigParse.getTomcat6HttpPort("HTTP/1.1", "http");
+				if(null != httpPort && httpPort.length() > 0) {
+					port = Integer.parseInt(httpPort);
+				}
+				
+			}
+			if (null == port) {
+				port = protocolConfig.getPort();
+			}
+		}
         if (provider != null && (port == null || port == 0)) {
             port = provider.getPort();
         }
@@ -483,7 +482,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
             if (!Constants.SCOPE_REMOTE.toString().equalsIgnoreCase(scope)) {
                 exportLocal(url);
             }
-            //如果配置不是local则暴露为远程服务.(配置为local，则表示只暴露远程服务)
+            //如果配置不是local则暴露为远程服务.(配置为local，则表示只暴露本地服务)
             if (! Constants.SCOPE_LOCAL.toString().equalsIgnoreCase(scope) ){
                 if (logger.isInfoEnabled()) {
                     logger.info("Export dubbo service " + interfaceClass.getName() + " to url " + url);

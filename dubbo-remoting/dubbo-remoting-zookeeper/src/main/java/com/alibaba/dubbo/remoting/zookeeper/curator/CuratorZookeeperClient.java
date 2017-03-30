@@ -140,9 +140,9 @@ public class CuratorZookeeperClient extends
 	public void removeTargetChildListener(String path, CuratorWatcher listener) {
 		((CuratorWatcherImpl) listener).unwatch();
 	}
-
+	
 	@Override
-	public void createOrUpdate(String path, byte[] data, boolean ephemeral) {
+    public void createOrUpdate(String path, byte[] data, boolean ephemeral) {
 		try {
 			if (client.checkExists().forPath(path) == null) {
 				if (ephemeral) {
@@ -155,8 +155,8 @@ public class CuratorZookeeperClient extends
 		} catch (Exception e) {
 			logger.error("to read the data for path error", e);
 		}
-	}
-
+    }
+	
 	@Override
 	public String readData(String path) {
 		String data = null;
@@ -169,15 +169,15 @@ public class CuratorZookeeperClient extends
 		}
 		return data;
 	}
-
+	
 	@Override
 	public boolean checkExist(String path) {
 		if(null != path) {
 			try {
-				return (client.checkExists().forPath(path) != null);
-			} catch (Exception e) {
-				logger.error("to checkExists the path error", e);
-			}
+	           return (client.checkExists().forPath(path) != null);
+            } catch (Exception e) {
+            	logger.error("to checkExists the path error", e);
+            }
 		}
 		return false;
 	}

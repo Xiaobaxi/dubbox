@@ -498,6 +498,15 @@ public class RpcContext {
     public Map<String, Object> get() {
         return values;
     }
+    
+    /**
+     * get values.
+     * 
+     * @return values
+     */
+    public Object getValue(String key) {
+        return values.get(key);
+    }
 
     /**
      * set value.

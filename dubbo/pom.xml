@@ -17,10 +17,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.alibaba</groupId>
-        <artifactId>dubbo-parent</artifactId>
-        <version>2.8.4</version>
-    </parent>
+		<groupId>com.alibaba</groupId>
+		<artifactId>dubbo-parent</artifactId>
+		<version>2.9.1-SNAPSHOT</version>
+	</parent>
     <artifactId>dubbo</artifactId>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
@@ -318,6 +318,26 @@
                 </exclusion>
             </exclusions>
         </dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo-trace-core</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo-trace-opentracing</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo-trace-log</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo-trace-simple</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
     </dependencies>
     <build>
         <plugins>
@@ -408,6 +428,10 @@
                                     <include>com.alibaba:dubbo-container-jetty</include>
                                     <include>com.alibaba:dubbo-container-log4j</include>
                                     <include>com.alibaba:dubbo-container-logback</include>
+                                    <include>com.alibaba:dubbo-trace-core</include>
+                                    <include>com.alibaba:dubbo-trace-opentracing</include>
+                                    <include>com.alibaba:dubbo-trace-log</include>
+									<include>com.alibaba:dubbo-trace-simple</include>
                                 </includes>
                             </artifactSet>
                             <transformers>

@@ -25,6 +25,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 import org.springframework.remoting.RemoteAccessException;
 import org.springframework.remoting.httpinvoker.CommonsHttpInvokerRequestExecutor;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
@@ -127,6 +128,8 @@ public class HttpProtocol extends AbstractProxyProtocol {
 				}
         	};
         	httpProxyFactoryBean.setHttpInvokerRequestExecutor(httpInvokerRequestExecutor);
+        } else if ("okHttpClient".equals(client)) {
+        	httpProxyFactoryBean.setHttpInvokerRequestExecutor(new OkHttpInvokerRequestExecutor(url));
         } else if ("commons".equals(client)) {
         	CommonsHttpInvokerRequestExecutor httpInvokerRequestExecutor = new CommonsHttpInvokerRequestExecutor();
         	httpInvokerRequestExecutor.setReadTimeout(url.getParameter(Constants.CONNECT_TIMEOUT_KEY, Constants.DEFAULT_CONNECT_TIMEOUT));

@@ -75,6 +75,13 @@ public interface Invocation {
      * @return attachment value.
      */
 	String getAttachment(String key, String defaultValue);
+	
+	/**
+	 * 
+	 * @param key
+	 * @param value
+	 */
+	void setAttachment(String key, String value);
 
     /**
      * get the invoker in current context.

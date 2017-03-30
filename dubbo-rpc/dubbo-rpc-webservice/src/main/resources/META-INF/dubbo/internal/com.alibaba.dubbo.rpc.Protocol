@@ -1,2 +1,1 @@
-webservice=com.alibaba.dubbo.rpc.protocol.webservice.WebServiceProtocol
-webserviceEx=com.alibaba.dubbo.rpc.protocol.webservice.WebServiceExProtocol
+webservice=com.alibaba.dubbo.rpc.protocol.webservice.HikWebServiceProtocol

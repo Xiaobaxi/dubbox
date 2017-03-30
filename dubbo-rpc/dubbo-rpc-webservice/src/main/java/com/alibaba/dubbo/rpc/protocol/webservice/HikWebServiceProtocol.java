@@ -36,17 +36,17 @@ import com.alibaba.dubbo.rpc.protocol.webservice.support.CXFService;
  * @version V1.0
  * @modify: {原因} by fangzhibin 2015年1月29日 下午2:46:37
  */
-public class WebServiceExProtocol extends AbstractProxyProtocol {
+public class HikWebServiceProtocol extends AbstractProxyProtocol {
 	
 	public static final int DEFAULT_PORT = 80;
-	private static final Logger logger = LoggerFactory.getLogger(WebServiceExProtocol.class);
+	private static final Logger logger = LoggerFactory.getLogger(HikWebServiceProtocol.class);
 	
 	private static final String CXF_PLUS_SERVICE_JAXWS = "com.github.cxfplus.jaxws.support.CXFPlusServiceFactoryBean";
 	private static final String CXF_PLUS_SERVICE_SIMPLE = "com.github.cxfplus.service.factory.CXFPlusServiceBean";
 	private static final String CXF_PLUS_CLIENT_FACTORY = "com.github.cxfplus.jaxws.CXFPlusClientFactoryBean";
 	private HttpBinder httpBinder;
 	
-	public WebServiceExProtocol() {
+	public HikWebServiceProtocol() {
 		super(Fault.class);
 	}
 	

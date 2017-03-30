@@ -1,2 +1,2 @@
-rest=com.alibaba.dubbo.rpc.protocol.rest.RestProtocol
 jaxrs=com.alibaba.dubbo.rpc.protocol.jaxrs.RestProtocol
+rest=com.alibaba.dubbo.rpc.protocol.rest.RestProtocol

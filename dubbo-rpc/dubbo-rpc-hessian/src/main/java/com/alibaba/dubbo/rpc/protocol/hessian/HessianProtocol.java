@@ -107,6 +107,8 @@ public class HessianProtocol extends AbstractProxyProtocol {
         String client = url.getParameter(Constants.CLIENT_KEY, Constants.DEFAULT_HTTP_CLIENT);
         if ("httpclient".equals(client)) {
             hessianProxyFactory.setConnectionFactory(new HttpClientConnectionFactory());
+        } else if ("okHttpClient".equalsIgnoreCase(client)) {
+            hessianProxyFactory.setConnectionFactory(new OkHttpConnectionFactory(url));
         } else if (client != null && client.length() > 0 && ! Constants.DEFAULT_HTTP_CLIENT.equals(client)) {
             throw new IllegalStateException("Unsupported http protocol client=\"" + client + "\"!");
         }
