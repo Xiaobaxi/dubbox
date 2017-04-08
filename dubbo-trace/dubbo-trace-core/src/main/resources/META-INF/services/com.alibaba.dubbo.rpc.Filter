@@ -1,2 +1,0 @@
-providerFilter=com.hikvision.ga.trace.core.TracerProviderFilter
-consumerFilter=com.hikvision.ga.trace.core.TracerConsumerFilter
