@@ -25,7 +25,7 @@ import org.apache.cxf.wsdl11.WSDLEndpointFactory;
  * <p>
  * Test on Apache CXF 3.1.6
  * 
- * @author jiyi 2016-4-23
+ * @author fangzhibin 2016-4-23
  */
 final class MyHTTPTransportFactory extends HTTPTransportFactory implements WSDLEndpointFactory{
 	private WSDLEndpointFactory fac=new SoapTransportFactory();

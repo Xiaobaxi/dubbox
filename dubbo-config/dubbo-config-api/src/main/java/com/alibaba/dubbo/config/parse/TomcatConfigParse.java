@@ -75,11 +75,11 @@ public class TomcatConfigParse {
 	
 	/**
 	 * 获取tomcat6的web发布端口,上诉parse方式由于servletContext的原因导致在tomcat6下解析不到端口
-	 * @author linchanglei 2015年6月16日 上午8:59:07
+	 * @author fangzhibin 2015年6月16日 上午8:59:07
 	 * @param protocol
 	 * @param scheme
 	 * @return
-	 * @modify: {原因} by linchanglei 2015年6月16日 上午8:59:07
+	 * @modify: {原因} by fangzhibin 2015年6月16日 上午8:59:07
 	 */
 	public static String getTomcat6HttpPort(String protocol, String scheme) {  
 		if(null == protocol || null == scheme){
