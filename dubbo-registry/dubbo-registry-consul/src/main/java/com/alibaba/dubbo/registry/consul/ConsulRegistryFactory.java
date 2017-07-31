@@ -2,16 +2,16 @@ package com.alibaba.dubbo.registry.consul;
 
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.registry.Registry;
-import com.alibaba.dubbo.registry.RegistryFactory;
+import com.alibaba.dubbo.registry.support.AbstractRegistryFactory;
 
 /**
- * ZookeeperRegistryFactory.
- * 
+ * consul registry factory
+ *
  * @author fangzhibin
  */
-public class ConsulRegistryFactory implements RegistryFactory {
-	
-	public Registry getRegistry(URL url) {
+public class ConsulRegistryFactory extends AbstractRegistryFactory {
+
+    public Registry createRegistry(URL url) {
         return new ConsulRegistry(url);
     }
 
