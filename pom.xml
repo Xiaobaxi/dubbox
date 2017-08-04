@@ -53,6 +53,7 @@
 		<module>dubbo-simple</module>
 		<module>dubbo-admin</module>
 		<module>dubbo-demo</module>
+		<module>dubbo-trace</module>
         <!--<module>dubbo-tool/dubbo-demo-lite-archetype</module>-->
 	</modules>
 	<profiles>

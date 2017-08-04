@@ -1,0 +1,1 @@
+rpctrace=com.alibaba.dubbo.trace.filter.RpcTraceFilter
