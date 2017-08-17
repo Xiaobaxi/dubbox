@@ -30,33 +30,26 @@ public class KafkaCollector implements Collector {
         endPoint.setIp("192.168.199.136");
         endPoint.setPort(1245);
         Annotation annotation = new Annotation();
-        annotation.setValue("test");
+        annotation.setValue("anno");
         annotation.setTimestamp(56565464L);
         annotation.setEndPoint(endPoint);
         Annotation annotation2 = new Annotation();
-        annotation2.setValue("test2");
+        annotation2.setValue("anno2");
         annotation2.setTimestamp(565654642L);
         annotations.add(annotation);
         annotations.add(annotation2);
         Span span = new Span();
         span.setAnnotations(annotations);
         span.setId("123456");
-        span.setName("span name");
-//        span.setParentId(234556L);
+        span.setName("span");
         span.setSample(true);
-//        span.setServiceId("dsadasd");
-        span.setTraceId("5432534");
+        span.setTraceId("654321");
         long start = System.currentTimeMillis();
         for (int i = 0; i < 20000; ++i) {
             String json = JSON.toJSONString(span);
         }
         long end = System.currentTimeMillis();
         System.out.println(end - start);
-//        System.out.println(json);
 
-//        Span span1 = JSON.parseObject(json, Span.class);
-//        System.out.println(span1.getName());
-//        System.out.println(span1.getServiceId());
-//        System.out.println(span.getServiceId());
     }
 }
